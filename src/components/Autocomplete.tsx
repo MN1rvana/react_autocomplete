@@ -27,8 +27,18 @@ export const Autocomplete: React.FC<Props> = ({
   }, [query, delay]);
 
   const filteredPeople = useMemo(() => {
+    if (debouncedQuery === '') {
+      return people;
+    }
+
+    const normalizedQuery = debouncedQuery.trim().toLowerCase();
+
+    if (normalizedQuery === '') {
+      return [];
+    }
+
     return people.filter(person =>
-      person.name.toLowerCase().includes(debouncedQuery.toLowerCase()),
+      person.name.toLowerCase().includes(normalizedQuery),
     );
   }, [people, debouncedQuery]);
 
